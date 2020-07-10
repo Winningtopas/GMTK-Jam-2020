@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     private float randomJumpDurationTimer;
     private bool randomJumpReady = false;
 
-
+    public ParticleSystem randomJumpParticles;
 
     // Start is called before the first frame update
     void Start()
@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         currentSpeed = walkSpeed;
 
         randomJumpCooldownTimer = Random.Range(2.0f, 4.0f);
-        randomJumpDurationTimer = Random.Range(0.5f, 1.5f);
+        randomJumpDurationTimer = Random.Range(0.25f, 0.5f);
     }
 
     private void FixedUpdate()
@@ -107,10 +107,13 @@ public class Player : MonoBehaviour
             randomJumpDurationTimer -= Time.deltaTime;
 
             if (randomJumpDurationTimer > 0)
+            {
                 rb.velocity = Vector3.up * jumpVelocity;
+                randomJumpParticles.Emit(3);
+            }
             else
             {
-                randomJumpDurationTimer = Random.Range(0.5f, 1.5f);
+                randomJumpDurationTimer = Random.Range(0.25f, 0.5f);
                 randomJumpReady = false;
             }
             //jump for x seconds
