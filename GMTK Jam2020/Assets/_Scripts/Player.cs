@@ -48,6 +48,14 @@ public class Player : MonoBehaviour
     private float randomJumpDurationTimer;
     private bool randomJumpReady = false;
 
+    //brackeys move
+
+    public CharacterController controller;
+    public Transform cam;
+
+    public float turnSmoothTime = 0.1f;
+    private float turnSmoothvelocity;
+
     public ParticleSystem randomJumpParticles;
 
     // Start is called before the first frame update
@@ -63,16 +71,24 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         HandleMovement();
-        RandomJump();
+        newMove();
     }
 
     void Update()
     {
+
+        RandomJump();
+
         playerPosition = this.transform.position;
         Attack();
         Speed();
         //ActiveCamera();
         jumpAvailable = IsGrounded();
+    }
+
+    void newMove()
+    {
+
     }
 
     void HandleMovement()
