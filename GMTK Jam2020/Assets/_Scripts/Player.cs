@@ -58,6 +58,11 @@ public class Player : MonoBehaviour
 
     public ParticleSystem randomJumpParticles;
 
+    public Vector3 gravity = new Vector3(0, -2.0F, 0);
+
+    public Vector3 lastCheckPointPosition;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +71,8 @@ public class Player : MonoBehaviour
 
         randomJumpCooldownTimer = Random.Range(2.0f, 4.0f);
         randomJumpDurationTimer = Random.Range(0.25f, 0.5f);
+
+        //Physics.gravity = gravity;
     }
 
     private void FixedUpdate()
@@ -77,7 +84,7 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        RandomJump();
+        //RandomJump();
 
         playerPosition = this.transform.position;
         Attack();
@@ -104,6 +111,38 @@ public class Player : MonoBehaviour
         {
             if (jumpAvailable == true)
                 rb.velocity = Vector3.up * jumpVelocity;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "MovingPlatform")
+        {
+            this.gameObject.transform.parent = collision.gameObject.transform;
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.tag == "MovingPlatform")
+            this.gameObject.transform.parent = null;
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.tag == "CheckPoint")
+        {
+            lastCheckPointPosition = transform.position;
+            collision.gameObject.GetComponentInChildren<ParticleSystem>().Emit(30);
+        }
+        if (collision.tag == "Death")
+        {
+            //play death sound
+            //fade to black
+            //respawn particles
+            rb.isKinematic = true;
+            rb.isKinematic = false;
+            transform.position = lastCheckPointPosition;
         }
     }
 
@@ -164,7 +203,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (Input.GetButton("Sprint"))
+            if (Input.GetButton("Sprint") && jumpAvailable)
                 currentSpeed = sprintSpeed;
             else
                 currentSpeed = walkSpeed;
@@ -178,11 +217,6 @@ public class Player : MonoBehaviour
             GameObject attackParticle = Instantiate((AttackParticle), Hand.gameObject.transform.position, Hand.gameObject.transform.rotation);
             attackParticle.name = "AttackParticle";
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-
     }
 
     private bool IsGrounded()

@@ -18,7 +18,6 @@ public class Orbit : MonoBehaviour
     }
     private void Update()
     {
-
         transform.rotation = new Quaternion(0f, transform.rotation.y, transform.rotation.z, 1f);
     }
 
