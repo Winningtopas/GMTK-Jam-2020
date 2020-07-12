@@ -20,6 +20,8 @@ public class JetPack : MonoBehaviour
     private bool randomJumpReady = false;
 
     public ParticleSystem randomJumpParticles;
+    public ParticleSystem jumpVonk;
+
 
     // Update is called once per frame
     void Update()
@@ -64,6 +66,10 @@ public class JetPack : MonoBehaviour
         if (!randomJumpReady)
         {
             randomJumpCooldownTimer -= Time.deltaTime;
+
+            if (randomJumpCooldownTimer <= 1f && randomJumpCooldownTimer > 0.8f)
+                jumpVonk.Emit(3);
+
             if (randomJumpCooldownTimer <= 0)
             {
                 randomJumpReady = true;

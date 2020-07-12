@@ -56,12 +56,17 @@ public class Player : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     private float turnSmoothvelocity;
 
+    //other
+
     public ParticleSystem randomJumpParticles;
 
     public Vector3 gravity = new Vector3(0, -2.0F, 0);
 
     public Vector3 lastCheckPointPosition;
 
+    private Quaternion lockedRotation;
+
+    private Vector3 offSet;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +76,8 @@ public class Player : MonoBehaviour
 
         randomJumpCooldownTimer = Random.Range(2.0f, 4.0f);
         randomJumpDurationTimer = Random.Range(0.25f, 0.5f);
+
+        lockedRotation = new Quaternion(0, this.transform.rotation.y, 0, 1);
 
         //Physics.gravity = gravity;
     }
@@ -122,10 +129,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit(Collision other)
+    //private void OnCollisionExit(Collision other)
+    //{
+    //    if (other.gameObject.tag == "MovingPlatform" || other.gameObject.tag == "Ground")
+    //        this.gameObject.transform.parent = null;
+    //}
+
+    private void OnCollisionExit(Collision collision)
     {
-        if (other.gameObject.tag == "MovingPlatform")
-            this.gameObject.transform.parent = null;
+        if (collision.gameObject.tag == "MovingPlatform")
+        {
+            gameObject.transform.parent = null;
+        }
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -195,19 +210,20 @@ public class Player : MonoBehaviour
 
     void Speed()
     {
-        currentSpeed = climbingSpeed;
+        currentSpeed = walkSpeed;
+        //currentSpeed = climbingSpeed;
 
-        if (zoom == true)
-        {
-            currentSpeed = zoomSpeed;
-        }
-        else
-        {
-            if (Input.GetButton("Sprint") && jumpAvailable)
-                currentSpeed = sprintSpeed;
-            else
-                currentSpeed = walkSpeed;
-        }
+        //if (zoom == true)
+        //{
+        //    currentSpeed = zoomSpeed;
+        //}
+        //else
+        //{
+        //    if (Input.GetButton("Sprint") && jumpAvailable)
+        //        currentSpeed = sprintSpeed;
+        //    else
+        //        currentSpeed = walkSpeed;
+        //}
     }
 
     void Attack()
