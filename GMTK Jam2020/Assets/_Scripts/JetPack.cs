@@ -22,6 +22,13 @@ public class JetPack : MonoBehaviour
     public ParticleSystem randomJumpParticles;
     public ParticleSystem jumpVonk;
 
+    public AudioSource heenWeg;
+    public AudioSource terugWeg;
+    public AudioSource jetPackNoises;
+
+    private bool doOnce = true;
+    public float brokenJumpIncrease = 2f;
+
 
     // Update is called once per frame
     void Update()
@@ -51,6 +58,9 @@ public class JetPack : MonoBehaviour
     {
         if (fuel > fuelDeplete && Input.GetButton("Fire1"))
         {
+            jetPackNoises.Play();
+
+
             randomJumpParticles.Emit(1);
             rb.velocity = Vector3.up * gameObject.GetComponent<Player>().jumpVelocity;
             fuel = fuel - fuelDeplete;
@@ -82,14 +92,30 @@ public class JetPack : MonoBehaviour
 
             if (randomJumpDurationTimer > 0)
             {
-                rb.velocity = Vector3.up * gameObject.GetComponent<Player>().jumpVelocity;
+                if (doOnce)
+                {
+                    jetPackNoises.Play();
+                    doOnce = false;
+                }
+                rb.velocity = Vector3.up * (gameObject.GetComponent<Player>().jumpVelocity + brokenJumpIncrease);
                 randomJumpParticles.Emit(3);
             }
             else
             {
+                doOnce = true;
                 randomJumpDurationTimer = Random.Range(0.25f, 0.5f);
                 randomJumpReady = false;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "JetPackBreak")
+        {
+            jetPackBroken = true;
+            heenWeg.Stop();
+            terugWeg.Play();
         }
     }
 }

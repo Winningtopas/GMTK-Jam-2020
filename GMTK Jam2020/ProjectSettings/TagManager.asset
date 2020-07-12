@@ -8,6 +8,7 @@ TagManager:
   - Death
   - CheckPoint
   - MovingPlatform
+  - JetPackBreak
   layers:
   - Default
   - TransparentFX
