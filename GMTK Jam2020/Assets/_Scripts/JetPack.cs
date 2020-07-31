@@ -9,6 +9,7 @@ public class JetPack : MonoBehaviour
     //[SerializeField] private Slider _slider;
     public bool jetPackBroken;
 
+    public float fuelMax = 5f;
     public float fuel = 70f;
     public float fuelDeplete = 0.5f;
     public float fuelIncreaseSpeed = 0.5f;
@@ -28,7 +29,7 @@ public class JetPack : MonoBehaviour
 
     private bool doOnce = true;
     public float brokenJumpIncrease = 2f;
-
+    public GameObject boxMessage;
 
     // Update is called once per frame
     void Update()
@@ -56,18 +57,31 @@ public class JetPack : MonoBehaviour
 
     public void JetPackFunction()
     {
-        if (fuel > fuelDeplete && Input.GetButton("Fire1"))
+
+        //if (fuel > 0 && Input.GetButton("Fire1"))
+        //    {
+        //        jetPackNoises.Play();
+
+
+        //        randomJumpParticles.Emit(1);
+        //        rb.velocity = Vector3.up * gameObject.GetComponent<Player>().jumpVelocity;
+        //        fuel = fuel - fuelDeplete * Time.deltaTime;
+        //    }
+        //    else if (fuel < 100 && gameObject.GetComponent<Player>().jumpAvailable)
+        //    {
+        //        fuel = fuel + fuelIncreaseSpeed * Time.deltaTime;
+        //    }
+        //}
+        if (fuel > fuelDeplete && Input.GetButtonDown("Fire2"))
         {
             jetPackNoises.Play();
-
-
-            randomJumpParticles.Emit(1);
+            randomJumpParticles.Emit(20);
             rb.velocity = Vector3.up * gameObject.GetComponent<Player>().jumpVelocity;
             fuel = fuel - fuelDeplete;
         }
-        else if (fuel < 100 && gameObject.GetComponent<Player>().jumpAvailable)
+        else if (fuel < fuelMax && gameObject.GetComponent<Player>().jumpAvailable)
         {
-            fuel = fuel + fuelIncreaseSpeed;
+            fuel = fuel + fuelIncreaseSpeed * Time.deltaTime;
         }
     }
 
@@ -116,6 +130,8 @@ public class JetPack : MonoBehaviour
             jetPackBroken = true;
             heenWeg.Stop();
             terugWeg.Play();
+            Destroy(other.gameObject);
+            boxMessage.SetActive(true);
         }
     }
 }

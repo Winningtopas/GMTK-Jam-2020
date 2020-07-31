@@ -16,6 +16,12 @@ public class MainMenu : MonoBehaviour
         levelLoader.GetComponent<LevelLoader>().LoadNextLevel();
     }
 
+    public void Credits()
+    {
+        audioSource.Stop();
+        levelLoader.GetComponent<LevelLoader>().CreditScene();
+    }
+
     public void QuitGame()
     {
         Application.Quit();

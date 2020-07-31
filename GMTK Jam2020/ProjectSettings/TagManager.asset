@@ -9,6 +9,7 @@ TagManager:
   - CheckPoint
   - MovingPlatform
   - JetPackBreak
+  - LoopPlank
   layers:
   - Default
   - TransparentFX

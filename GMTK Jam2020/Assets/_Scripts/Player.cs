@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public GameObject AttackParticle;
 
     Rigidbody rb;
+    public GameObject levelLoader;
 
     //Camera
     //public Camera CameraZoom;
@@ -105,6 +106,7 @@ public class Player : MonoBehaviour
 
     }
 
+
     void HandleMovement()
     {
 
@@ -127,13 +129,15 @@ public class Player : MonoBehaviour
         {
             this.gameObject.transform.parent = collision.gameObject.transform;
         }
+        if(collision.gameObject.tag == "LoopPlank" && gameObject.GetComponent<JetPack>().jetPackBroken == true)
+        {
+            levelLoader.GetComponent<LevelLoader>().LoadNextLevel();
+            //win animation
+            //delay
+            //credits
+        }
     }
 
-    //private void OnCollisionExit(Collision other)
-    //{
-    //    if (other.gameObject.tag == "MovingPlatform" || other.gameObject.tag == "Ground")
-    //        this.gameObject.transform.parent = null;
-    //}
 
     private void OnCollisionExit(Collision collision)
     {

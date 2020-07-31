@@ -14,10 +14,10 @@ public class Rotate : MonoBehaviour
     void Update()
     {
         if (rotateX)
-            transform.Rotate(rotateSpeed, 0.0f, 0.0f, Space.Self);
+            transform.Rotate(rotateSpeed * Time.deltaTime, 0.0f, 0.0f, Space.Self);
         if (rotateY)
-            transform.Rotate(0f, rotateSpeed, 0.0f, Space.Self);
+            transform.Rotate(0f, rotateSpeed * Time.deltaTime, 0.0f, Space.Self);
         if (rotateZ)
-            transform.Rotate(0f, 0.0f, rotateSpeed, Space.Self);
+            transform.Rotate(0f, 0.0f, rotateSpeed * Time.deltaTime, Space.Self);
     }
 }
